@@ -1,0 +1,89 @@
+Startup:
+
+To use Visual Studio:
+	Right-Click on TechnicalTest.uproject and Generate Visual Studio project files
+	Launch TechnicalTest.sln
+
+Tasks:
+	Task #1
+	File: TTCharacter.cpp
+
+		Assign the pickable that this character is currently looking at to PickableInFocus, for simplicity you can ignore collisions
+
+		All PickableComponent can be found here: gameMode->PickableComponents
+		PickableComponents can be enabled/disabled with bCanBePickedUp
+		The make pickup distance is: MaxPickupDistance
+
+	Task #2.1
+	File: ElementalComponent.cpp
+
+		Add a set of ElementType flags to ElementType
+		Elements are bit exclusive that are defines like this
+		EElementFlags::Air	= 0x01
+		EElementFlags::Earth = 0x02
+		EElementFlags::Fire	= 0x04
+		EElementFlags::Water = 0x08
+
+	Task #2.1
+	File: ElementalComponent.cpp
+
+		Remove a set of ElementType flags to ElementType
+
+	Task #2.3
+	File: ElementalComponent.cpp
+
+		Returns a count of bit in ElementType
+
+	Task #2.4
+	File: ElementalComponent.cpp
+
+		Take ElementType and split it in the specified amount
+		Each Element will be an entry in splittedElements
+		No duplicate bit should exists and the split should be as fair as possible
+		Examples:
+		ElementType = Air|Earth|Water -> Split 2 -> Air|Earth, Water
+		ElementType = Air|Earth|Fire|Water -> Split 2 -> Air|Earth, Fire|Water
+		ElementType = Air|Water -> Split 3 -> Air, Water, None
+
+	Task #2.5
+	File: ElementalComponent.cpp
+
+		Take parameter elements and merge it into return parameters mergedElements
+		mergedElements should have for first entry the merge elements
+		mergedElements entry #1 to elements.Num() should be any duplicate element that could not have been moved into the merged entry (or None if there was no duplicate)
+		Examples:
+		elements = {Air|Earth, Fire|Water} -> mergedElements = {Air|Earth|Fire|Water, None, None}
+		elements = {Air, Fire|Water, Earth|Fire} -> mergedElements = {Air|Earth|Fire|Water, None, None, Fire}
+		elements = {Air, Air|Water, Water|Air} -> mergedElements = {Air|Water, None, Air, Water|Air}
+
+	Task #3
+	File: TTHud.cpp
+	File: CharacterHUD.uasset
+
+		Convert ATTHud behavior to a Blueprint Widget (WidgetBlueprint'/Game/TechnicalTest/Blueprints/CharacterHUD.CharacterHUD')
+		Convert the current cursor behavior in blueprint
+		Elemental information is valid when looking at or holding a pickable with the ElementalComponent
+		No elemental information should be visible when it doesn't apply
+		When elemental information apply all base should be visible, but only the appropriate elemental overlay should be visible
+
+	Task #4
+	File: Imbue_Shrine_BP.uasset
+	File: Pedestral_BP.uasset
+	File: ElementImbueType.uasset
+
+		Create a CPP base class for both Imbue_Shrine_BP and Pedestral_BP called AElementalPedestral
+		Split Imbue_Shrine_BP in 5 different actor for the 5 differents behaviors:
+			- Set
+			- Add
+			- Remove
+			- Split
+			- Merge
+		Right, now each behavior is in one actor and the logic is split accross the blueprint
+		You should end up with 6 different actors:
+			- Pedestral
+			- Imbue Shrine: Set
+			- Imbue Shrine: Add
+			- Imbue Shrine: Remove
+			- Imbue Shrine: Split
+			- Imbue Shrine: Merge
+		You'll have to decide what is best left in blueprint or code and how you manage your shrine hierarchy
